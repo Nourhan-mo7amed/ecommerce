@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hello_world/screens/prodect.dart';
 
 class RecentProdects extends StatelessWidget {
-  final List prodect = [
+  final List<Map<String, String>> prodect = [
     {
       'imageUrl': 'assets/images/airpods-re.png',
       'name': 'AirPods',
@@ -11,32 +11,32 @@ class RecentProdects extends StatelessWidget {
     },
     {
       'imageUrl': 'assets/images/laptop-re.png',
-      'name': 'MacBook ',
-      'price': '100.000',
+      'name': 'MacBook',
+      'price': '100000',
       'rating': '5.0',
     },
     {
       'imageUrl': 'assets/images/laptopHP-re.png',
-      'name': 'laptop',
-      'price': '30.000',
+      'name': 'Laptop',
+      'price': '30000',
       'rating': '4.8',
     },
     {
       'imageUrl': 'assets/images/mobile-re.png',
       'name': 'iPhone 14',
-      'price': '15.000',
+      'price': '15000',
       'rating': '4.7',
     },
     {
       'imageUrl': 'assets/images/mobile2-r.png',
       'name': 'iPhone 16',
-      'price': '13.000',
+      'price': '13000',
       'rating': '4.7',
     },
     {
       'imageUrl': 'assets/images/headphone2-re.png',
-      'name': 'head phone 14',
-      'price': '1.000',
+      'name': 'Headphone',
+      'price': '1000',
       'rating': '4.7',
     }
   ];
@@ -45,34 +45,43 @@ class RecentProdects extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
+    return Expanded(
+      child: GridView.builder(
+        padding: const EdgeInsets.all(10),
         itemCount: prodect.length,
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, childAspectRatio: 0.70),
-        itemBuilder: (BuildContext context, i) {
-          return single_prod(
-              name: prodect[i]['name'],
-              imageUrl: prodect[i]['imageUrl'],
-              price: prodect[i]['price'],
-              rating: prodect[i]['rating']);
-        });
+          crossAxisCount: 2,
+          childAspectRatio: 0.7,
+          crossAxisSpacing: 0,
+          mainAxisSpacing: 0,
+        ),
+        itemBuilder: (BuildContext context, int i) {
+          return SingleProd(
+            name: prodect[i]['name']!,
+            imageUrl: prodect[i]['imageUrl']!,
+            price: prodect[i]['price']!,
+            rating: prodect[i]['rating']!,
+          );
+        },
+      ),
+    );
   }
 }
 
-// ignore: camel_case_types
-class single_prod extends StatelessWidget {
+class SingleProd extends StatelessWidget {
   final String imageUrl;
   final String name;
   final String price;
   final String rating;
 
-  const single_prod({
+  const SingleProd({
     super.key,
     required this.imageUrl,
     required this.name,
     required this.price,
     required this.rating,
   });
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -87,11 +96,12 @@ class single_prod extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            height: 180,
-            width: 170,
+            height: 190,
+            width: 165,
             decoration: BoxDecoration(
-                color: Color.fromARGB(255, 181, 206, 224),
-                borderRadius: BorderRadius.circular(30)),
+              color: const Color.fromARGB(255, 181, 206, 224),
+              borderRadius: BorderRadius.circular(30),
+            ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(30),
               child: Image.asset(
@@ -101,15 +111,17 @@ class single_prod extends StatelessWidget {
             ),
           ),
           ListTile(
-              title: Text(name),
-              subtitle: Text('\$${price}'),
-              trailing: SizedBox(
-                width: 50,
-                child: Row(children: [
-                  const Icon(Icons.star, color: Colors.amber, size: 16),
-                  Text('${rating}')
-                ]),
-              )),
+            title:
+                Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
+            subtitle: Text('\$${double.parse(price).toStringAsFixed(2)}'),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(Icons.star, color: Colors.amber, size: 16),
+                Text(rating),
+              ],
+            ),
+          ),
         ],
       ),
     );
